@@ -1,1 +1,2 @@
-UIKitLayout.xcodeproj/xcuserdata
+**/xcuserdata
+.build/

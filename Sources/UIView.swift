@@ -1,12 +1,8 @@
-//
-//  UIView.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/24/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKit
+
+@MainActor
+public protocol UIViewEmbeddable {}
+extension UIView: UIViewEmbeddable {}
 
 extension UIView {
     public var left: XAxisAnchor {
@@ -42,11 +38,11 @@ extension UIView {
     }
 
     public var width: DimensionAnchor {
-        .width(widthAnchor)
+        DimensionAnchor(anchor: widthAnchor)
     }
 
     public var height: DimensionAnchor {
-        .height(heightAnchor)
+        DimensionAnchor(anchor: heightAnchor)
     }
 }
 
@@ -59,9 +55,24 @@ extension UIView {
      This struct is returned from all embed functions. It can be used to reference the embedded view as
      well as the constraints that were created.
      */
-    public struct Embedded<View> where View: UIView {
-        public let view: View
-        public let constraints: [(convertable: ConstraintConvertable, constraint: NSLayoutConstraint)]
+    public struct Embedded<Parent, Child> where Parent: UIView, Child: UIView {
+        public let view: Child
+        public let constraints: [(convertable: ConstraintConvertable<Child, Parent>, constraint: NSLayoutConstraint)]
+    }
+}
+
+extension UIViewEmbeddable where Self: UIView {
+
+    /**
+     Adds a subview and pins all four edges to a layout guide of the receiver with a given inset.
+     */
+    @discardableResult
+    public func embed<View>(
+        _ child: View,
+        inset: CGFloat,
+        from layoutGuide: LayoutGuide<Self> = .view
+    ) -> Embedded<Self, View> {
+        embed(child, pin: .allEdges(inset: inset, from: layoutGuide))
     }
 
     /**
@@ -70,19 +81,10 @@ extension UIView {
     @discardableResult
     public func embed<View>(
         _ child: View,
-        inset: CGFloat
-    ) -> Embedded<View> {
-        embed(child, pin: .allEdges(inset: inset))
-    }
-
-    /**
-     Adds a subview and pins all four edges to a layout guide of the receiver with a given inset.
-     */
-    @discardableResult public func embed<View>(
-        _ child: View,
-        inset: UIEdgeInsets
-    ) -> Embedded<View> {
-        embed(child, pin: .allEdges(inset: inset))
+        inset: UIEdgeInsets,
+        from layoutGuide: LayoutGuide<Self> = .view
+    ) -> Embedded<Self, View> {
+        embed(child, pin: .allEdges(inset: inset, from: layoutGuide))
     }
 
     /**
@@ -91,14 +93,16 @@ extension UIView {
     @discardableResult
     public func embed<View>(
         _ child: View,
-        pin constraintConvertables: [ConstraintConvertable] = .allEdges
-    ) -> Embedded<View> {
+        pin constraintConvertables: [ConstraintConvertable<View, Self>] = .allEdges
+    ) -> Embedded<Self, View> {
         child.translatesAutoresizingMaskIntoConstraints = false
         addSubview(child)
-        let constraints = constraintConvertables.map { c -> (ConstraintConvertable, NSLayoutConstraint) in
-            (c, c.constraint(from: child, to: self))
-        }
-        return Embedded(view: child, constraints: constraints)
+        return Embedded(
+            view: child,
+            constraints: constraintConvertables.map { c in
+                (c, c.constraint(from: child, to: self))
+            }
+        )
     }
 }
 
@@ -121,56 +125,43 @@ extension UIView {
     }
 }
 
-extension UIView {
-    func anchor(axis: XAxis, layoutGuide: LayoutGuide) -> NSLayoutXAxisAnchor {
-        switch layoutGuide {
-        case .view: return anchor(axis: axis)
-        case .readableContent: return readableContentGuide.anchor(axis: axis)
-        case .margins: return layoutMarginsGuide.anchor(axis: axis)
-        case .safeArea: return safeAreaLayoutGuide.anchor(axis: axis)
-        }
-    }
-
-    func anchor(axis: YAxis, layoutGuide: LayoutGuide) -> NSLayoutYAxisAnchor {
-        switch layoutGuide {
-        case .view: return anchor(axis: axis)
-        case .readableContent: return readableContentGuide.anchor(axis: axis)
-        case .margins: return layoutMarginsGuide.anchor(axis: axis)
-        case .safeArea: return safeAreaLayoutGuide.anchor(axis: axis)
-        }
-    }
-
-    func anchor(dimension: Dimension, layoutGuide: LayoutGuide) -> NSLayoutDimension {
-        switch layoutGuide {
-        case .view: return anchor(dimension: dimension)
-        case .readableContent: return readableContentGuide.anchor(dimension: dimension)
-        case .margins: return layoutMarginsGuide.anchor(dimension: dimension)
-        case .safeArea: return safeAreaLayoutGuide.anchor(dimension: dimension)
-        }
-    }
-
-    private func anchor(axis: XAxis) -> NSLayoutXAxisAnchor {
+extension UIView: Constrainable {
+    public func anchor(axis: XAxis) -> NSLayoutXAxisAnchor {
         switch axis {
-        case .centerX: return centerXAnchor
-        case .leading: return leadingAnchor
-        case .left: return leftAnchor
-        case .right: return rightAnchor
-        case .trailing: return trailingAnchor
+        case .centerX: centerXAnchor
+        case .leading: leadingAnchor
+        case .left: leftAnchor
+        case .right: rightAnchor
+        case .trailing: trailingAnchor
         }
     }
 
-    private func anchor(axis: YAxis) -> NSLayoutYAxisAnchor {
+    public func anchor(axis: YAxis) -> NSLayoutYAxisAnchor {
         switch axis {
-        case .bottom: return bottomAnchor
-        case .centerY: return centerYAnchor
-        case .top: return topAnchor
+        case .bottom: bottomAnchor
+        case .centerY: centerYAnchor
+        case .top: topAnchor
         }
     }
 
-    private func anchor(dimension: Dimension) -> NSLayoutDimension {
+    public func anchor(dimension: Dimension) -> NSLayoutDimension {
         switch dimension {
-        case .width: return widthAnchor
-        case .height: return heightAnchor
+        case .width: widthAnchor
+        case .height: heightAnchor
         }
+    }
+}
+
+extension Constrainable where Self: UIView {
+    func anchor(axis: XAxis, layoutGuide: LayoutGuide<Self>) -> NSLayoutXAxisAnchor {
+        self[keyPath: layoutGuide.path].anchor(axis: axis)
+    }
+
+    func anchor(axis: YAxis, layoutGuide: LayoutGuide<Self>) -> NSLayoutYAxisAnchor {
+        self[keyPath: layoutGuide.path].anchor(axis: axis)
+    }
+
+    func anchor(dimension: Dimension, layoutGuide: LayoutGuide<Self>) -> NSLayoutDimension {
+        self[keyPath: layoutGuide.path].anchor(dimension: dimension)
     }
 }

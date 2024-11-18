@@ -1,17 +1,10 @@
-//
-//  EmbedViewControllerTests.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 6/9/21.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKitLayout
 import XCTest
 
+@MainActor
 final class EmbedViewControllerTests: XCTestCase {
-    private let parent = UIViewController()
-    private let child = UIViewController()
+
+    // MARK: Internal
 
     func testEmbed() {
         AssertEqualConstraints(
@@ -48,8 +41,8 @@ final class EmbedViewControllerTests: XCTestCase {
     func testEmbedWithSpecificAnchors() {
         AssertEqualConstraints(
             parent.embed(child, pin: [
-                .left(offset: 5),
-                .bottom(offset: -5),
+                .left(inset: 5),
+                .bottom(inset: 5),
                 .height(.greaterThanOrEqual, ratio: .half)
             ]).constraints.map { $1 },
             [
@@ -69,4 +62,9 @@ final class EmbedViewControllerTests: XCTestCase {
             ]
         )
     }
+
+    // MARK: Private
+
+    private let parent = UIViewController()
+    private let child = UIViewController()
 }

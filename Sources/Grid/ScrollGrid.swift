@@ -3,7 +3,8 @@
 //  UIKitLayout
 //
 //  Created by Peter Meyers on 1/20/20.
-//  Copyright © 2020 Peter Meyers. All rights 
+//  Copyright © 2020 Peter Meyers. All rights reserved.
+//  periphery:ignore:all
 
 import UIKit
 
@@ -13,10 +14,8 @@ import UIKit
  top row and left column will be frozen in place (i.e. hover over the other cells)
  */
 open class ScrollGrid: UIView {
-    private let grid = Grid()
-    private let scrollView = UIScrollView()
-    private var rowSpacing: CGFloat = 0
-    private var columnSpacing: CGFloat = 0
+
+    // MARK: Lifecycle
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,12 +27,7 @@ open class ScrollGrid: UIView {
         didInstantiate()
     }
 
-    private func didInstantiate() {
-        scrollView.bounces = false
-        scrollView.delegate = self
-        scrollView.embed(grid, pin: [.top, .left, .right, .bottom])
-        embed(scrollView)
-    }
+    // MARK: Public
 
     public func make(
         rowCount: Int,
@@ -69,21 +63,35 @@ open class ScrollGrid: UIView {
             firstColumnSeparator.left.pin(to: firstCell.right)
         }
     }
+
+    // MARK: Private
+
+    private let grid = Grid()
+    private let scrollView = UIScrollView()
+    private var rowSpacing: CGFloat = 0
+    private var columnSpacing: CGFloat = 0
+
+    private func didInstantiate() {
+        scrollView.bounces = false
+        scrollView.delegate = self
+        scrollView.embed(grid, pin: [.top, .left, .right, .bottom])
+        embed(scrollView)
+    }
 }
 
 extension ScrollGrid: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset
-        grid.firstRowTopConstraints.forEach { constraint in
+        for constraint in grid.firstRowTopConstraints {
             constraint.constant = -offset.y
         }
-        grid.firstRowBottomConstraints.forEach { constraint in
+        for constraint in grid.firstRowBottomConstraints {
             constraint.constant = offset.y - rowSpacing
         }
-        grid.firstColumnLeftConstraints.forEach { constraint in
+        for constraint in grid.firstColumnLeftConstraints {
             constraint.constant = -offset.x
         }
-        grid.firstColumnRightConstraints.forEach { constraint in
+        for constraint in grid.firstColumnRightConstraints {
             constraint.constant = offset.x - columnSpacing
         }
     }

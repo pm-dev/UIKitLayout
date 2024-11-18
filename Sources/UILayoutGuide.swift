@@ -1,9 +1,10 @@
 //
-//  UILayoutGuide+UILayoutKit.swift
+//  UILayoutGuide.swift
 //  UIKitLayout
 //
 //  Created by Peter Meyers on 1/24/20.
 //  Copyright © 2020 Peter Meyers. All rights reserved.
+//  periphery:ignore:all
 
 import UIKit
 
@@ -41,37 +42,37 @@ extension UILayoutGuide {
     }
 
     public var width: DimensionAnchor {
-        .width(widthAnchor)
+        DimensionAnchor(anchor: widthAnchor)
     }
 
     public var height: DimensionAnchor {
-        .height(heightAnchor)
+        DimensionAnchor(anchor: heightAnchor)
     }
 }
 
-extension UILayoutGuide {
-    func anchor(axis: XAxis) -> NSLayoutXAxisAnchor {
+extension UILayoutGuide: Constrainable {
+    public func anchor(axis: XAxis) -> NSLayoutXAxisAnchor {
         switch axis {
-        case .centerX: return centerXAnchor
-        case .leading: return leadingAnchor
-        case .left: return leftAnchor
-        case .right: return rightAnchor
-        case .trailing: return trailingAnchor
+        case .centerX: centerXAnchor
+        case .leading: leadingAnchor
+        case .left: leftAnchor
+        case .right: rightAnchor
+        case .trailing: trailingAnchor
         }
     }
 
-    func anchor(axis: YAxis) -> NSLayoutYAxisAnchor {
+    public func anchor(axis: YAxis) -> NSLayoutYAxisAnchor {
         switch axis {
-        case .bottom: return bottomAnchor
-        case .centerY: return centerYAnchor
-        case .top: return topAnchor
+        case .bottom: bottomAnchor
+        case .centerY: centerYAnchor
+        case .top: topAnchor
         }
     }
 
-    func anchor(dimension: Dimension) -> NSLayoutDimension {
+    public func anchor(dimension: Dimension) -> NSLayoutDimension {
         switch dimension {
-        case .width: return widthAnchor
-        case .height: return heightAnchor
+        case .width: widthAnchor
+        case .height: heightAnchor
         }
     }
 }

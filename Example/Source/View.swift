@@ -1,18 +1,10 @@
-//
-//  View.swift
-//  UIKitLayout-Example
-//
-//  Created by Peter Meyers on 7/17/20.
-//  Copyright © 2020 Peter Meyers, Inc. All rights reserved.
-//
-
 import Foundation
 import UIKit
 import UIKitLayout
 
 final class View: UIView {
 
-    private let label: UILabel = {
+    private(set) lazy var label: UILabel = {
         let label = UILabel()
         label.text = """
         Padmé tatooine darth anakin solo wicket antilles dooku. Jawa darth sidious calamar
@@ -21,7 +13,7 @@ final class View: UIView {
         return label
     }()
 
-    private let imageView: UIImageView = {
+    private(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "puppies.jpg")
         imageView.contentMode = .scaleAspectFit
@@ -29,13 +21,13 @@ final class View: UIView {
         return imageView
     }()
 
-    private let redView: UIView = {
+    private(set) lazy var redView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
         return view
     }()
 
-    private let stackView: UIStackView = {
+    private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         return stackView
@@ -44,12 +36,15 @@ final class View: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        embedSubviews()
+    }
 
+    private func embedSubviews() {
         // Use the space below to practice laying out views
 
-        embed(redView, pin: [.top(toLayoutGuide: .safeArea, offset: 20), .leading(offset: 20), .trailing(offset: -20)])
-        redView.embed(imageView, pin: [.top(offset: 10), .leading(offset: 10), .trailing(offset: -10)])
-        redView.embed(label, pin: [.bottom(offset: -10), .leading(offset: 10), .trailing(offset: -10)])
+        embed(redView, pin: [.top(toLayoutGuide: .safeArea, inset: 20), .leading(inset: 20), .trailing(inset: 20)])
+        redView.embed(imageView, pin: [.top(inset: 10), .leading(inset: 10), .trailing(inset: 10)])
+        redView.embed(label, pin: [.bottom(inset: 10), .leading(inset: 10), .trailing(inset: 10)])
         imageView.bottom.pin(to: label.top, spacing: 5)
     }
 

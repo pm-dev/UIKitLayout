@@ -1,44 +1,37 @@
-//
-//  XAxisAnchor.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/24/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKit
 
 /**
  XAxisAnchor is used for setting up
  horizontal constraints.
  */
+@MainActor
 public struct XAxisAnchor {
-    let anchor: NSLayoutXAxisAnchor
-    let axis: XAxis
 
-    public static func left(_ anchor: NSLayoutXAxisAnchor) -> XAxisAnchor {
+    // MARK: Public
+
+    public static func left(_ anchor: NSLayoutXAxisAnchor) -> Self {
         .init(anchor: anchor, axis: .left)
     }
 
-    public static func leading(_ anchor: NSLayoutXAxisAnchor) -> XAxisAnchor {
+    public static func leading(_ anchor: NSLayoutXAxisAnchor) -> Self {
         .init(anchor: anchor, axis: .leading)
     }
 
-    public static func right(_ anchor: NSLayoutXAxisAnchor) -> XAxisAnchor {
+    public static func right(_ anchor: NSLayoutXAxisAnchor) -> Self {
         .init(anchor: anchor, axis: .right)
     }
 
-    public static func trailing(_ anchor: NSLayoutXAxisAnchor) -> XAxisAnchor {
+    public static func trailing(_ anchor: NSLayoutXAxisAnchor) -> Self {
         .init(anchor: anchor, axis: .trailing)
     }
 
-    public static func centerX(_ anchor: NSLayoutXAxisAnchor) -> XAxisAnchor {
+    public static func centerX(_ anchor: NSLayoutXAxisAnchor) -> Self {
         .init(anchor: anchor, axis: .centerX)
     }
 
     @discardableResult
     public func pin(
-        to toAnchor: XAxisAnchor,
+        to toAnchor: Self,
         _ relation: NSLayoutConstraint.Relation = .equal,
         spacing: CGFloat = 0,
         priority: UILayoutPriority = .required,
@@ -63,4 +56,9 @@ public struct XAxisAnchor {
             )
         }
     }
+
+    // MARK: Internal
+
+    let anchor: NSLayoutXAxisAnchor
+    let axis: XAxis
 }

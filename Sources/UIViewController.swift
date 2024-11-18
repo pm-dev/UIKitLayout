@@ -3,7 +3,8 @@
 //  UIKitLayout
 //
 //  Created by James Ortiz on 5/18/21.
-//  Copyright © 2021 Peter Meyers, Inc. All rights 
+//  Copyright © 2021 Nextdoor, Inc. All rights reserved.
+//  periphery:ignore:all
 
 import UIKit
 
@@ -14,7 +15,7 @@ extension UIViewController {
      */
     public struct Embedded<Controller> where Controller: UIViewController {
         public let controller: Controller
-        public let constraints: [(convertable: ConstraintConvertable, constraint: NSLayoutConstraint)]
+        public let constraints: [(convertable: ConstraintConvertable<UIView, UIView>, constraint: NSLayoutConstraint)]
     }
 
     /**
@@ -34,7 +35,7 @@ extension UIViewController {
     @discardableResult
     public func embed<Controller>(
         _ child: Controller,
-        pin constraintConvertables: [ConstraintConvertable] = .allEdges
+        pin constraintConvertables: [ConstraintConvertable<UIView, UIView>] = .allEdges
     ) -> Embedded<Controller> {
         addChild(child)
         let embeddedView = view.embed(child.view, pin: constraintConvertables)

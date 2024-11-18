@@ -1,13 +1,6 @@
-//
-//  Equality.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/14/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import XCTest
 
+@MainActor
 func AssertEqualConstraints(_ lhs: [NSLayoutConstraint], _ rhs: [NSLayoutConstraint]) {
     XCTAssertEqual(
         lhs.count,
@@ -19,6 +12,7 @@ func AssertEqualConstraints(_ lhs: [NSLayoutConstraint], _ rhs: [NSLayoutConstra
     }
 }
 
+@MainActor
 func AssertEqualConstraints(_ lhs: NSLayoutConstraint, _ rhs: NSLayoutConstraint) {
     XCTAssert(
         lhs.firstItem === rhs.firstItem,

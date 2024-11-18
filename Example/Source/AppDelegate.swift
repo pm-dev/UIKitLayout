@@ -1,14 +1,6 @@
-//
-//  AppDelegate.swift
-//  UIKitLayout-Example
-//
-//  Created by Peter Meyers on 7/17/20.
-//  Copyright © 2020 Peter Meyers, Inc. All rights reserved.
-//
-
 import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,

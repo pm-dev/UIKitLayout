@@ -1,11 +1,3 @@
-//
-//  DimensionAnchor.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/24/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKit
 
 /**
@@ -13,20 +5,13 @@ import UIKit
  constraints relating specifically to a view's size.
  */
 public struct DimensionAnchor {
-    let anchor: NSLayoutDimension
-    let dimension: Dimension
 
-    public static func width(_ anchor: NSLayoutDimension) -> DimensionAnchor {
-        DimensionAnchor(anchor: anchor, dimension: .width)
-    }
+    // MARK: Public
 
-    public static func height(_ anchor: NSLayoutDimension) -> DimensionAnchor {
-        DimensionAnchor(anchor: anchor, dimension: .height)
-    }
-
+    @MainActor
     @discardableResult
     public func pin(
-        to toAnchor: DimensionAnchor,
+        to toAnchor: Self,
         _ relation: NSLayoutConstraint.Relation = .equal,
         ratio: Ratio = .equal,
         plus: CGFloat = 0,
@@ -43,6 +28,7 @@ public struct DimensionAnchor {
         )
     }
 
+    @MainActor
     @discardableResult
     public func pin(
         _ relation: NSLayoutConstraint.Relation = .equal,
@@ -61,4 +47,8 @@ public struct DimensionAnchor {
         constraint.isActive = activate
         return constraint
     }
+
+    // MARK: Internal
+
+    let anchor: NSLayoutDimension
 }

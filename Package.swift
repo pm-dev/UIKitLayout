@@ -1,10 +1,10 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
     name: "UIKitLayout",
     platforms: [
-        .iOS(.v11),
+        .iOS(.v12),
     ],
     products: [
         .library(

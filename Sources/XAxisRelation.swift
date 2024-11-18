@@ -4,24 +4,20 @@
 //
 //  Created by Peter Meyers on 1/14/20.
 //  Copyright © 2020 Peter Meyers. All rights reserved.
+//  periphery:ignore:all
 
 import UIKit
 
-public struct XAxisRelation: Equatable {
-    public let fromAxis: XAxis
-    public let fromLayoutGuide: LayoutGuide
-    public let toAxis: XAxis
-    public let toLayoutGuide: LayoutGuide
-    public let constant: CGFloat
-    public let relation: NSLayoutConstraint.Relation
-    public let priority: UILayoutPriority
-    public let active: Bool
+@MainActor
+public struct XAxisRelation<FromView: UIView, ToView: UIView> {
+
+    // MARK: Lifecycle
 
     public init(
         _ fromAxis: XAxis,
-        _ fromLayoutGuide: LayoutGuide = .view,
+        _ fromLayoutGuide: LayoutGuide<FromView> = .view,
         to toAxis: XAxis,
-        _ toLayoutGuide: LayoutGuide = .view,
+        _ toLayoutGuide: LayoutGuide<ToView> = .view,
         _ relation: NSLayoutConstraint.Relation = .equal,
         constant: CGFloat = 0,
         priority: UILayoutPriority = .required,
@@ -37,7 +33,18 @@ public struct XAxisRelation: Equatable {
         self.active = active
     }
 
-    public func constraint(from fromView: UIView, to toView: UIView) -> NSLayoutConstraint {
+    // MARK: Public
+
+    public let fromAxis: XAxis
+    public let fromLayoutGuide: LayoutGuide<FromView>
+    public let toAxis: XAxis
+    public let toLayoutGuide: LayoutGuide<ToView>
+    public let constant: CGFloat
+    public let relation: NSLayoutConstraint.Relation
+    public let priority: UILayoutPriority
+    public let active: Bool
+
+    public func constraint(from fromView: FromView, to toView: ToView) -> NSLayoutConstraint {
         fromView.anchor(axis: fromAxis, layoutGuide: fromLayoutGuide).pin(
             to: toView.anchor(axis: toAxis, layoutGuide: toLayoutGuide),
             relation,

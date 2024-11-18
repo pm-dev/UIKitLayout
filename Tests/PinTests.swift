@@ -1,31 +1,25 @@
-//
-//  PinTests.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/14/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKitLayout
 import XCTest
 
-class PinTests: XCTestCase {
-    private let parent = UIView()
-    private let first = UIView()
-    private let second = UIView()
+final class PinTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Constraints between two items must be in the same view heirarchy
+    // MARK: Internal
+
+    @MainActor
+    override func setUp() async throws {
+        parent = UIView()
+        first = UIView()
+        second = UIView()
         parent.addSubview(first)
         parent.addSubview(second)
     }
 
+    @MainActor
     func testVerticalPin() {
         AssertEqualConstraints(
             first.bottom.pin(to: second.top, spacing: 5),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: second,
@@ -38,7 +32,7 @@ class PinTests: XCTestCase {
         AssertEqualConstraints(
             first.top.pin(to: second.bottom, spacing: 5),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .top,
                 relatedBy: .equal,
                 toItem: second,
@@ -49,11 +43,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testHorizontalPin() {
         AssertEqualConstraints(
             first.trailing.pin(to: second.leading, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .trailing,
                 relatedBy: .equal,
                 toItem: second,
@@ -66,7 +61,7 @@ class PinTests: XCTestCase {
         AssertEqualConstraints(
             first.leading.pin(to: second.trailing, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .leading,
                 relatedBy: .equal,
                 toItem: second,
@@ -77,11 +72,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinGte() {
         AssertEqualConstraints(
             first.trailing.pin(to: second.leading, .greaterThanOrEqual, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .trailing,
                 relatedBy: .lessThanOrEqual,
                 toItem: second,
@@ -94,7 +90,7 @@ class PinTests: XCTestCase {
         AssertEqualConstraints(
             first.leading.pin(to: second.trailing, .greaterThanOrEqual, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .leading,
                 relatedBy: .greaterThanOrEqual,
                 toItem: second,
@@ -105,11 +101,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinLte() {
         AssertEqualConstraints(
             first.trailing.pin(to: second.leading, .lessThanOrEqual, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .trailing,
                 relatedBy: .greaterThanOrEqual,
                 toItem: second,
@@ -122,7 +119,7 @@ class PinTests: XCTestCase {
         AssertEqualConstraints(
             first.leading.pin(to: second.trailing, .lessThanOrEqual, spacing: 2),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .leading,
                 relatedBy: .lessThanOrEqual,
                 toItem: second,
@@ -133,6 +130,7 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinMargins() {
         AssertEqualConstraints(
             first.layoutMarginsGuide.bottom.pin(to: second.layoutMarginsGuide.top),
@@ -148,6 +146,7 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinSafeArea() {
         AssertEqualConstraints(
             first.safeAreaLayoutGuide.bottom.pin(to: second.top),
@@ -163,11 +162,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinReadableContent() {
         AssertEqualConstraints(
             first.bottom.pin(to: second.readableContentGuide.top),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: second.readableContentGuide,
@@ -178,11 +178,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinUnrequired() {
         AssertEqualConstraints(
             first.bottom.pin(to: second.top, priority: .defaultHigh),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: second,
@@ -193,11 +194,12 @@ class PinTests: XCTestCase {
         )
     }
 
+    @MainActor
     func testPinUnactivated() {
         AssertEqualConstraints(
             first.bottom.pin(to: second.top, activate: false),
             NSLayoutConstraint(
-                item: first,
+                item: first as Any,
                 attribute: .bottom,
                 relatedBy: .equal,
                 toItem: second,
@@ -207,4 +209,10 @@ class PinTests: XCTestCase {
             ) <- { $0.isActive = false }
         )
     }
+
+    // MARK: Private
+
+    private var parent: UIView!
+    private var first: UIView!
+    private var second: UIView!
 }

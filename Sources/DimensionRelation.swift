@@ -1,28 +1,15 @@
-//
-//  DimensionRelation.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/14/20.
-//  Copyright © 2020 Peter Meyers. All rights 
-
 import UIKit
 
-public struct DimensionRelation: Equatable {
-    public let fromDimension: Dimension
-    public let fromLayoutGuide: LayoutGuide
-    public let toDimension: Dimension
-    public let toLayoutGuide: LayoutGuide
-    public let constant: CGFloat
-    public let multiplier: CGFloat
-    public let relation: NSLayoutConstraint.Relation
-    public let priority: UILayoutPriority
-    public let active: Bool
+@MainActor
+public struct DimensionRelation<FromView: UIView, ToView: UIView> {
+
+    // MARK: Lifecycle
 
     public init(
         _ fromDimension: Dimension,
-        _ fromLayoutGuide: LayoutGuide = .view,
+        _ fromLayoutGuide: LayoutGuide<FromView> = .view,
         to toDimension: Dimension,
-        _ toLayoutGuide: LayoutGuide = .view,
+        _ toLayoutGuide: LayoutGuide<ToView> = .view,
         _ relation: NSLayoutConstraint.Relation = .equal,
         multiplier: CGFloat = 1,
         constant: CGFloat = 0,
@@ -40,7 +27,19 @@ public struct DimensionRelation: Equatable {
         self.active = active
     }
 
-    public func constraint(from fromView: UIView, to toView: UIView) -> NSLayoutConstraint {
+    // MARK: Public
+
+    public let fromDimension: Dimension
+    public let fromLayoutGuide: LayoutGuide<FromView>
+    public let toDimension: Dimension
+    public let toLayoutGuide: LayoutGuide<ToView>
+    public let constant: CGFloat
+    public let multiplier: CGFloat
+    public let relation: NSLayoutConstraint.Relation
+    public let priority: UILayoutPriority
+    public let active: Bool
+
+    public func constraint(from fromView: FromView, to toView: ToView) -> NSLayoutConstraint {
         fromView.anchor(dimension: fromDimension, layoutGuide: fromLayoutGuide).pin(
             to: toView.anchor(dimension: toDimension, layoutGuide: toLayoutGuide),
             relation,

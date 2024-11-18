@@ -3,7 +3,8 @@
 //  UIKitLayout
 //
 //  Created by Peter Meyers on 12/30/19.
-//  Copyright © 2019 Peter Meyers. All rights 
+//  Copyright © 2019 Peter Meyers. All rights reserved.
+//  periphery:ignore:all
 
 import UIKit
 
@@ -13,11 +14,10 @@ import UIKit
  the same width, based on the intrinsic content width of the widest cell in the column.
  */
 open class Grid: UIView {
+
+    // MARK: Public
+
     public private(set) var rows: [[UIView]] = []
-    private(set) var firstRowTopConstraints: [NSLayoutConstraint] = []
-    private(set) var firstRowBottomConstraints: [NSLayoutConstraint] = []
-    private(set) var firstColumnLeftConstraints: [NSLayoutConstraint] = []
-    private(set) var firstColumnRightConstraints: [NSLayoutConstraint] = []
 
     /**
      Removes all cells from the grid.
@@ -62,8 +62,8 @@ open class Grid: UIView {
             }
             rows.append(row)
         }
-        rows.reversed().forEach { row in
-            row.reversed().forEach { cell in
+        for row in rows.reversed() {
+            for cell in row.reversed() {
                 cell.translatesAutoresizingMaskIntoConstraints = false
                 addSubview(cell)
             }
@@ -128,4 +128,11 @@ open class Grid: UIView {
         guard columnIndex < row.count else { return nil }
         return row[columnIndex] as? T
     }
+
+    // MARK: Internal
+
+    private(set) var firstRowTopConstraints: [NSLayoutConstraint] = []
+    private(set) var firstRowBottomConstraints: [NSLayoutConstraint] = []
+    private(set) var firstColumnLeftConstraints: [NSLayoutConstraint] = []
+    private(set) var firstColumnRightConstraints: [NSLayoutConstraint] = []
 }

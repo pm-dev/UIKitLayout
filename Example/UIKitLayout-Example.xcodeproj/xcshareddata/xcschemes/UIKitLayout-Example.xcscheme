@@ -17,7 +17,7 @@
                BlueprintIdentifier = "uikitlayout::UIKitLayout"
                BuildableName = "UIKitLayout.framework"
                BlueprintName = "UIKitLayout"
-               ReferencedContainer = "container:UIKitLayout.xcodeproj">
+               ReferencedContainer = "container:UIKitLayout-Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "uikitlayout::UIKitLayoutTests"
                BuildableName = "UIKitLayoutTests.xctest"
                BlueprintName = "UIKitLayoutTests"
-               ReferencedContainer = "container:UIKitLayout.xcodeproj">
+               ReferencedContainer = "container:UIKitLayout-Example.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,7 +57,7 @@
             BlueprintIdentifier = "6752DF53284DB4A3009B295B"
             BuildableName = "UIKitLayout-Example.app"
             BlueprintName = "UIKitLayout-Example"
-            ReferencedContainer = "container:UIKitLayout.xcodeproj">
+            ReferencedContainer = "container:UIKitLayout-Example.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -73,7 +73,7 @@
             BlueprintIdentifier = "uikitlayout::UIKitLayout"
             BuildableName = "UIKitLayout.framework"
             BlueprintName = "UIKitLayout"
-            ReferencedContainer = "container:UIKitLayout.xcodeproj">
+            ReferencedContainer = "container:UIKitLayout-Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -1,11 +1,3 @@
-//
-//  AutoScrollView.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 7/5/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
@@ -24,13 +16,7 @@ import UIKit
  */
 open class AutoScrollView: UIScrollView {
 
-    private let contentView = UIView()
-
-    @available(*, unavailable, message: "This view does not support adjusted content inset")
-    override public var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
-        get { .never }
-        set { _ = newValue }
-    }
+    // MARK: Lifecycle
 
     public init(scrollableDimensions: Set<Dimension>) {
         super.init(frame: .zero)
@@ -42,9 +28,21 @@ open class AutoScrollView: UIScrollView {
         didInstantiate(scrollableDimensions: [.width, .height])
     }
 
+    // MARK: Public
+
+    @available(*, unavailable, message: "This view does not support adjusted content inset")
+    override public var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+        get { .never }
+        set { _ = newValue }
+    }
+
     override public func addSubview(_ view: UIView) {
         contentView.addSubview(view)
     }
+
+    // MARK: Private
+
+    private let contentView = UIView()
 
     private func didInstantiate(scrollableDimensions: Set<Dimension>) {
         super.contentInsetAdjustmentBehavior = .never

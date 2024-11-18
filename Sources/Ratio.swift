@@ -4,8 +4,9 @@
 //
 //  Created by Peter Meyers on 11/7/19.
 //  Copyright © 2019 Peter Meyers. All rights reserved.
+//  periphery:ignore:all
 
-import UIKit
+import CoreGraphics
 
 /**
  A relation between two integers

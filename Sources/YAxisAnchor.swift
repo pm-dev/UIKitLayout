@@ -1,36 +1,29 @@
-//
-//  YAxisAnchor.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/24/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKit
 
 /**
  YAxisAnchor is used for setting up
  vertical constraints.
  */
+@MainActor
 public struct YAxisAnchor {
-    let anchor: NSLayoutYAxisAnchor
-    let axis: YAxis
 
-    public static func top(_ anchor: NSLayoutYAxisAnchor) -> YAxisAnchor {
-        YAxisAnchor(anchor: anchor, axis: .top)
+    // MARK: Public
+
+    public static func top(_ anchor: NSLayoutYAxisAnchor) -> Self {
+        Self(anchor: anchor, axis: .top)
     }
 
-    public static func bottom(_ anchor: NSLayoutYAxisAnchor) -> YAxisAnchor {
-        YAxisAnchor(anchor: anchor, axis: .bottom)
+    public static func bottom(_ anchor: NSLayoutYAxisAnchor) -> Self {
+        Self(anchor: anchor, axis: .bottom)
     }
 
-    public static func centerY(_ anchor: NSLayoutYAxisAnchor) -> YAxisAnchor {
-        YAxisAnchor(anchor: anchor, axis: .centerY)
+    public static func centerY(_ anchor: NSLayoutYAxisAnchor) -> Self {
+        Self(anchor: anchor, axis: .centerY)
     }
 
     @discardableResult
     public func pin(
-        to toAnchor: YAxisAnchor,
+        to toAnchor: Self,
         _ relation: NSLayoutConstraint.Relation = .equal,
         spacing: CGFloat = 0,
         priority: UILayoutPriority = .required,
@@ -55,4 +48,9 @@ public struct YAxisAnchor {
             )
         }
     }
+
+    // MARK: Internal
+
+    let anchor: NSLayoutYAxisAnchor
+    let axis: YAxis
 }

@@ -1,16 +1,10 @@
-//
-//  ConstrainTests.swift
-//  UIKitLayout
-//
-//  Created by Peter Meyers on 1/14/20.
-//  Copyright © 2020 Peter Meyers. All rights reserved.
-//
-
 import UIKitLayout
 import XCTest
 
-class ConstrainTests: XCTestCase {
-    private let view = UIView()
+@MainActor
+final class ConstrainTests: XCTestCase {
+
+    // MARK: Internal
 
     func testPinWidthEq() {
         AssertEqualConstraints(
@@ -131,4 +125,8 @@ class ConstrainTests: XCTestCase {
             ) <- { $0.isActive = true }
         )
     }
+
+    // MARK: Private
+
+    private let view = UIView()
 }

@@ -1,11 +1,3 @@
-//
-//  SceneDelegate.swift
-//  UIKitLayout-Example
-//
-//  Created by Peter Meyers on 7/17/20.
-//  Copyright © 2020 Peter Meyers, Inc. All rights reserved.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -16,7 +8,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
-    ) {}
+    ) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+        window.rootViewController = ViewController()
+        window.makeKeyAndVisible()
+    }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
 

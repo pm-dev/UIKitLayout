@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "0EB30BEA-5049-45EA-A5AE-B5D30984B3C4",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "UIKitLayout",
+          "name" : "UIKitLayout"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UIKitLayoutTests",
+        "name" : "UIKitLayoutTests"
+      }
+    }
+  ],
+  "version" : 1
+}
